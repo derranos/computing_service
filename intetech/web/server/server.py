@@ -4,9 +4,20 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pathlib import Path
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
 app = FastAPI()
+
+origins = ['http://localhost:8000', 'http://127.0.0.1:8000']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,        # Разрешенные источники
+    allow_credentials=True,       # Разрешить куки и аутентификационные заголовки
+    allow_methods=["*"],          # Разрешить все методы
+    allow_headers=["*"],          # Разрешить любые заголовки 
+)
 
 web_page_path = Path(__file__).parent.parent / "web_page"  # Путь к папке с веб-страницей
 data_store = {}  # Хранилище данных (можно заменить на базу данных)
