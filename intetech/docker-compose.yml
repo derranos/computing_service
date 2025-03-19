@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  python-server:
+    image: python_server  # Указываем имя уже созданного образа
+    ports:
+      - "8000:8000"
+
+  cron-job-dispatcher:
+    image: go_cron # Указываем имя уже созданного образа
+    depends_on:
+      - python-server
