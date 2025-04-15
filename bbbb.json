@@ -1,0 +1,4 @@
+{
+    "inputVariables": ["var1", "var2", "var12"],
+    "outputVariables": ["var3", "var4", "var5"]
+}

@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intetech</title>
-    <script src="/static/config.js?v=<?= Date.now() ?>"></script>
-    <script defer src="/static/script.js?v=<?= Date.now() ?>"></script>
+    <script defer src="/static/configToJS.js?v=<?= Date.now() ?>"></script>
     <script defer src="/static/sse.js?v=<?= Date.now() ?>"></script>
+    <script defer src="/static/applyFunc.js?v=<?= Date.now() ?>"></script>    
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <h2>Введите переменные:</h2>
-    <input id="var1" type="number" placeholder="Var1">
-    <input id="var2" type="number" placeholder="Var2">
+    <h2>Введите значения</h2>
+    <div id="inputFields"></div>
 
-    <h3>Результаты:</h3>
-    <input id="var3" type="number" readonly placeholder="Var3">
-    <input id="var4" type="number" readonly placeholder="Var4">
-    <input id="var5" type="number" readonly placeholder="Var5">
+    <h2>Вывод значений</h2>
+    <div id="outputFields"></div>
 </body>
 </html>

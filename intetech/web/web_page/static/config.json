@@ -1,0 +1,586 @@
+{
+    "inputVariables": ["var1", "var2", "var12"],
+    "outputVariables": ["var3", "var4", "var5"],
+    "functionTemplates": [
+        {
+            "name": "f0",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x1"
+            ],
+            "outputVars": [
+                "x1"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f1",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x2"
+            ],
+            "outputVars": [
+                "x2"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f2",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x1",
+                "x2"
+            ],
+            "outputVars": [
+                "x3"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f3",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x3",
+                "x1"
+            ],
+            "outputVars": [
+                "x4"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f4",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x3",
+                "x1"
+            ],
+            "outputVars": [
+                "x5"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f5",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x6"
+            ],
+            "outputVars": [
+                "x6"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f6",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x7"
+            ],
+            "outputVars": [
+                "x7"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f7",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x6",
+                "x7"
+            ],
+            "outputVars": [
+                "x8"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f8",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x8",
+                "x6"
+            ],
+            "outputVars": [
+                "x9"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f9",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x8",
+                "x6"
+            ],
+            "outputVars": [
+                "x10"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f10",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x11"
+            ],
+            "outputVars": [
+                "x11"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f11",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x12"
+            ],
+            "outputVars": [
+                "x12"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f12",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x11",
+                "x12"
+            ],
+            "outputVars": [
+                "x13"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f13",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x13",
+                "x11"
+            ],
+            "outputVars": [
+                "x14"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f14",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x13",
+                "x11"
+            ],
+            "outputVars": [
+                "x15"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f15",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x16"
+            ],
+            "outputVars": [
+                "x16"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f16",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x17"
+            ],
+            "outputVars": [
+                "x17"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f17",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x16",
+                "x17"
+            ],
+            "outputVars": [
+                "x18"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f18",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x18",
+                "x16"
+            ],
+            "outputVars": [
+                "x19"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f19",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x18",
+                "x16"
+            ],
+            "outputVars": [
+                "x20"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f20",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x21"
+            ],
+            "outputVars": [
+                "x21"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f21",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x22"
+            ],
+            "outputVars": [
+                "x22"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f22",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x21",
+                "x22"
+            ],
+            "outputVars": [
+                "x23"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f23",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x23",
+                "x21"
+            ],
+            "outputVars": [
+                "x24"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f24",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x23",
+                "x21"
+            ],
+            "outputVars": [
+                "x25"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f25",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x26"
+            ],
+            "outputVars": [
+                "x26"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f26",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x27"
+            ],
+            "outputVars": [
+                "x27"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f27",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x26",
+                "x27"
+            ],
+            "outputVars": [
+                "x28"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f28",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x28",
+                "x26"
+            ],
+            "outputVars": [
+                "x29"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f29",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x28",
+                "x26"
+            ],
+            "outputVars": [
+                "x30"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f30",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x31"
+            ],
+            "outputVars": [
+                "x31"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f31",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x32"
+            ],
+            "outputVars": [
+                "x32"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f32",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x31",
+                "x32"
+            ],
+            "outputVars": [
+                "x33"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f33",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x33",
+                "x31"
+            ],
+            "outputVars": [
+                "x34"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f34",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x33",
+                "x31"
+            ],
+            "outputVars": [
+                "x35"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f35",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x36"
+            ],
+            "outputVars": [
+                "x36"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f36",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x37"
+            ],
+            "outputVars": [
+                "x37"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f37",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x36",
+                "x37"
+            ],
+            "outputVars": [
+                "x38"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f38",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x38",
+                "x36"
+            ],
+            "outputVars": [
+                "x39"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f39",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x38",
+                "x36"
+            ],
+            "outputVars": [
+                "x40"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f40",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x41"
+            ],
+            "outputVars": [
+                "x41"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f41",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x42"
+            ],
+            "outputVars": [
+                "x42"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f42",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x41",
+                "x42"
+            ],
+            "outputVars": [
+                "x43"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f43",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x43",
+                "x41"
+            ],
+            "outputVars": [
+                "x44"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f44",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x43",
+                "x41"
+            ],
+            "outputVars": [
+                "x45"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f45",
+            "body": "return x1 * -1",
+            "inputVars": [
+                "x46"
+            ],
+            "outputVars": [
+                "x46"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f46",
+            "body": "return x1 * -1;",
+            "inputVars": [
+                "x47"
+            ],
+            "outputVars": [
+                "x47"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f47",
+            "body": "return 2 + x1 + x2;",
+            "inputVars": [
+                "x46",
+                "x47"
+            ],
+            "outputVars": [
+                "x48"
+            ],
+            "cron": 1
+        },
+        {
+            "name": "f48",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x48",
+                "x46"
+            ],
+            "outputVars": [
+                "x49"
+            ],
+            "cron": 5
+        },
+        {
+            "name": "f49",
+            "body": "return x2 + x1;",
+            "inputVars": [
+                "x48",
+                "x46"
+            ],
+            "outputVars": [
+                "x50"
+            ],
+            "cron": 1
+        }
+    ]
+}
