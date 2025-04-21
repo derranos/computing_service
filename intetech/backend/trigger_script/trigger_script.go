@@ -8,9 +8,22 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
+	"sync"
+	"time"
 
 	"github.com/jasonlvhit/gocron"
 )
+
+type Task struct {
+	Name      string
+	Priority  int
+	Component int
+	InputVars []string
+}
+
+var taskMap = make(map[string][]Task)
+var mutex sync.Mutex
 
 // Структуры
 type FunctionTemplate struct {
@@ -115,32 +128,33 @@ func topologicalSort(functions []FunctionTemplate) ([]FunctionTemplate, []int) {
 
 // sendPostRequest отправляет POST-запрос на указанный URL с данными в формате JSON
 
-func sendPostRequest(scriptName string, priority int, component int, inputVars []string) {
+func sendTask(task Task, timeFunc string) error {
 	URL := "http://127.0.0.1:8000/trigger"
 
-	// Создаем структуру для запроса
 	requestData := map[string]interface{}{
-		"script":    scriptName,
-		"priority":  priority,
-		"component": component,
-		"inputVars": inputVars, // передаем массив как срез
+		"script":    task.Name,
+		"priority":  task.Priority,
+		"component": task.Component,
+		"inputVars": task.InputVars,
+		"wave":      timeFunc,
 	}
 
-	// Сериализация в JSON
 	jsonData, err := json.Marshal(requestData)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("marshal error: %w", err)
 	}
 
-	// Отправка POST-запроса
 	resp, err := http.Post(URL, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("post error: %w", err)
 	}
 	defer resp.Body.Close()
 
-	// Выводим ответ от сервера
-	//fmt.Println("Response Status:", resp.Status)
+	if resp.StatusCode >= 300 {
+		return fmt.Errorf("non-2xx response: %s", resp.Status)
+	}
+
+	return nil
 }
 func sendNewComponent(comp int) {
 	URL := "http://127.0.0.1:8000/makeComponent"
@@ -160,8 +174,68 @@ func sendNewComponent(comp int) {
 	defer resp.Body.Close()
 
 	// Выводим ответ от сервера
-	fmt.Println("Response Status:", resp.Status)
+	//fmt.Println("Response Status:", resp.Status)
 }
+func processOldestWaveIfNeeded() {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	if len(taskMap) <= 2 {
+		return
+	}
+
+	var oldest string
+	first := true
+
+	for k := range taskMap {
+		if first || k < oldest {
+			oldest = k
+			first = false
+		}
+	}
+
+	tasks := taskMap[oldest]
+	delete(taskMap, oldest)
+
+	// Сортировка по приоритету
+	sort.Slice(tasks, func(i, j int) bool {
+		return tasks[i].Priority < tasks[j].Priority
+	})
+
+	// Обработка по 50 штук
+	for i := 0; i < len(tasks); i += 50 {
+		end := i + 50
+		if end > len(tasks) {
+			end = len(tasks)
+		}
+		chunk := tasks[i:end]
+		processChunk(chunk, oldest)
+	}
+}
+func processChunk(chunk []Task, timeFunc string) {
+	var wg sync.WaitGroup
+
+	for _, task := range chunk {
+		wg.Add(1)
+		go func(t Task) {
+			defer wg.Done()
+			err := sendTask(t, timeFunc)
+			if err != nil {
+				log.Printf("Ошибка при отправке задачи %s: %v\n", t.Name, err)
+			}
+		}(task)
+	}
+
+	wg.Wait() // Ждём, пока все горутины закончат работу
+}
+func addTaskToMap(task Task, wave string) {
+	mutex.Lock()
+	taskMap[wave] = append(taskMap[wave], task)
+	mutex.Unlock()
+
+	processOldestWaveIfNeeded()
+}
+
 func main() {
 	filename := filepath.Join("..", "..", "web", "web_page", "static", "config.json")
 	config, err := loadConfig(filename)
@@ -181,7 +255,12 @@ func main() {
 	for i, functionTemplate := range config.FunctionTemplates {
 		s.Every(uint64(functionTemplate.Cron)).Second().Do(func(script string, priority int, component int, inputVars []string) {
 			//fmt.Printf("Function %s is working, cron = %d, priority = %d, component = %d\n", script, functionTemplate.Cron, priority, component)
-			sendPostRequest(script, priority, component, inputVars)
+			addTaskToMap(Task{
+				Name:      script,
+				Priority:  priority,
+				Component: component,
+				InputVars: inputVars,
+			}, time.Now().UTC().Truncate(time.Second).Format(time.RFC3339))
 		}, functionTemplate.Name, i, components[i], functionTemplate.InputVars)
 	}
 

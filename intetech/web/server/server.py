@@ -43,6 +43,7 @@ class TaskRequest(BaseModel):
     priority: int
     component: int
     inputVars: list
+    wave: str
 
 class Component(BaseModel):
     component: int
@@ -70,14 +71,14 @@ def load_data_from_json():
     except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail="Error parsing JSON file")
 
-async def write_to_db(data, client: InfluxDBClient, bucket, org, tag = 'start'):
+async def write_to_db(data, client: InfluxDBClient, bucket, org, wave, tag = 'start'):
     with client.write_api(write_options=SYNCHRONOUS) as write_api:
         for measurement, value in data.items():
             point = {
                 "measurement": 'vars',
                 "tag" : {"var": tag},
                 "fields": {f"{measurement}": value},
-                "time": datetime.now(timezone.utc).isoformat()
+                "time": wave
             }
             # print(point)
             write_api.write(bucket=bucket, record=point, org=org)
@@ -137,28 +138,33 @@ async def trigger(task: TaskRequest):
     comp = task.component
     if comp not in task_queues:
         task_queues[comp] = []  # Создаём очередь для компоненты
-
-    heapq.heappush(task_queues[comp], (task.priority, task.script, task.inputVars))
+    loop = asyncio.get_running_loop()
+    future = loop.create_future()
+    heapq.heappush(task_queues[comp], (task.priority, task.script, task.inputVars, task.wave, future))
     # Запускаем обработчик для компоненты, если его нет
     if comp not in workers:
         workers[comp] = asyncio.create_task(process_component_tasks(comp))
-
+    await future  # Ждем завершения задачи
     return {"status": "ok"}
 
 # Обработчик задач для компоненты
 async def process_component_tasks(comp):
     #print('Запущен обработчик для компоненты:', comp)
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0.05)
     while task_queues[comp]:
         # Извлекаем с наивысшим приоритетом
-        _, task_name, inputVars = heapq.heappop(task_queues[comp])
+        _, task_name, inputVars, wave, future = heapq.heappop(task_queues[comp])
         vals = await get_from_db(inputVars, client, bucket, org)
         
-        #print('Получены значения:', vals, task_name)
+        # print('Получены значения:', vals, task_name)
         res = await execute_task(task_name, vals, comp)
-        #print('Ответ', res)
+        # print('Ответ', res)
         if res:
-            await write_to_db({res[0]: int(res[1])}, client, bucket, org, 'update')
+            await write_to_db({res[0]: int(res[1])}, client, bucket, org, wave, 'update')
+            # print('Записано в БД:', {res[0]: int(res[1])})
+            future.set_result("done") 
+        else:
+            future.set_exception("error")
     del workers[comp]  # Удаляем обработчик, когда все задачи выполнены
 # Выполнение задачи
 async def execute_task(task_name, vals, comp):
@@ -214,6 +220,6 @@ if __name__ == "__main__":
         org=org,
         predicate='_measurement="vars"' # Условие удаления (в данном случае удаляем все данные)
     )
-    asyncio.run(write_to_db(load_data_from_json(), client, bucket, org))
+    asyncio.run(write_to_db(load_data_from_json(), client, bucket, org, datetime.now(timezone.utc).isoformat()))
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

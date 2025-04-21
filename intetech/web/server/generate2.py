@@ -14,7 +14,7 @@ def generate_variables(num_variables):
     return variables
 
 # Генерация 200 переменных
-num_variables = 50
+num_variables = 400
 variables = generate_variables(num_variables)
 
 # Сохранение в файл

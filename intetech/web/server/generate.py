@@ -62,7 +62,7 @@ def generate_function_templates(num_templates):
     return function_templates
 
 # Генерация 200 шаблонов
-num_templates = 50
+num_templates = 400
 function_templates = generate_function_templates(num_templates)
 
 # Сохранение в файл
